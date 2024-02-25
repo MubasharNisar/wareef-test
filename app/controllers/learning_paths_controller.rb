@@ -1,0 +1,2 @@
+class LearningPathsController < ApplicationController
+end
