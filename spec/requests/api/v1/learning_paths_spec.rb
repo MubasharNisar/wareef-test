@@ -13,26 +13,33 @@ RSpec.describe 'LearningPaths', type: :request do
       end
     end
 
-    post 'Creates a learning path' do
-      tags 'Learning Paths'
-      consumes 'application/json'
-      produces 'application/json'
-      parameter name: :learning_path, in: :body, schema: {
-        type: :object,
-        properties: {
-          title: { type: :string }
-        },
-        required: ['title']
-      }
-
-      response '201', 'learning path created' do
-        let(:learning_path) { { title: 'New Learning Path' } }
-        run_test!
-      end
-
-      response '422', 'invalid request' do
-        let(:learning_path) { { title: nil } }
-        run_test!
+    path '/learning_paths' do
+      post 'Creates a learning path' do
+        tags 'Learning Paths'
+        consumes 'application/json'
+        produces 'application/json'
+        parameter name: :learning_path, in: :body, schema: {
+          type: :object,
+          properties: {
+            title: { type: :string },
+            sequenced_courses: {
+              type: :array,
+              items: { type: :integer },
+              description: 'Array of course IDs in sequence'
+            }
+          },
+          required: ['title', 'sequenced_courses']
+        }
+  
+        response '201', 'learning path created' do
+          let(:learning_path) { { title: 'New Learning Path', sequenced_courses: [create(:course).id, create(:course).id] } }
+          run_test!
+        end
+  
+        response '422', 'invalid request' do
+          let(:learning_path) { { title: nil, sequenced_courses: [] } }
+          run_test!
+        end
       end
     end
   end
