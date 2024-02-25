@@ -3,4 +3,7 @@
 class Course < ApplicationRecord
   belongs_to :author
   has_and_belongs_to_many :talents
+  belongs_to :learning_path, optional: true
+
+  enum status: { in_progress: 0, complete: 1 }
 end
