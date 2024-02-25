@@ -8,5 +8,6 @@ class Course < ApplicationRecord
 
   enum status: { in_progress: 0, complete: 1 }
 
-  validates :title, presence: true
+  validates :title, :credit_hours, presence: true
+  validates :code, presence: true, uniqueness: true
 end

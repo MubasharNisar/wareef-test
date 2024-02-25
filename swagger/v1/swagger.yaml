@@ -4,6 +4,100 @@ info:
   title: API V1
   version: v1
 paths:
+  "/authors":
+    get:
+      summary: Retrieves all authors
+      tags:
+      - Authors
+      responses:
+        '200':
+          description: authors found
+    post:
+      summary: Creates an author
+      tags:
+      - Authors
+      parameters: []
+      responses:
+        '201':
+          description: author created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              required:
+              - name
+              - email
+  "/authors/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves an author
+      tags:
+      - Authors
+      responses:
+        '200':
+          description: author found
+        '404':
+          description: author not found
+    put:
+      summary: Updates an author
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: author updated
+        '422':
+          description: invalid request
+        '404':
+          description: author not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              required:
+              - name
+              - email
+    delete:
+      summary: Deletes an author
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: author deleted successfully
+        '404':
+          description: author not found
+        '422':
+          description: no other author available to transfer courses
   "/courses":
     get:
       summary: Retrieves all courses
@@ -30,14 +124,17 @@ paths:
               properties:
                 title:
                   type: string
-                learning_path_id:
-                  type: integer
                 author_id:
+                  type: integer
+                code:
+                  type: string
+                credit_hours:
                   type: integer
               required:
               - title
-              - learning_path_id
               - author_id
+              - code
+              - credit_hours
   "/courses/{id}":
     parameters:
     - name: id
@@ -79,14 +176,17 @@ paths:
               properties:
                 title:
                   type: string
-                learning_path_id:
-                  type: integer
                 author_id:
+                  type: integer
+                code:
+                  type: string
+                credit_hours:
                   type: integer
               required:
               - title
-              - learning_path_id
               - author_id
+              - code
+              - credit_hours
     delete:
       summary: Deletes a course
       tags:
@@ -128,8 +228,14 @@ paths:
               properties:
                 title:
                   type: string
+                sequenced_courses:
+                  type: array
+                  items:
+                    type: integer
+                  description: Array of course IDs in sequence
               required:
               - title
+              - sequenced_courses
   "/learning_paths/{id}":
     parameters:
     - name: id
