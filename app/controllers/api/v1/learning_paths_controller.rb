@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LearningPathsController < ApplicationController
+class Api::V1::LearningPathsController < ApplicationController
   before_action :set_learning_path, only: [:show, :update, :destroy]
   def index
     learning_paths = LearningPath.all
