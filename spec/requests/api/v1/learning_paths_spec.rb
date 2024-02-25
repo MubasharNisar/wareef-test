@@ -2,6 +2,7 @@
 
 require 'swagger_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'LearningPaths', type: :request do
   path '/learning_paths' do
     get 'Retrieves all learning paths' do
@@ -28,14 +29,14 @@ RSpec.describe 'LearningPaths', type: :request do
               description: 'Array of course IDs in sequence'
             }
           },
-          required: ['title', 'sequenced_courses']
+          required: %w[title sequenced_courses]
         }
-  
+
         response '201', 'learning path created' do
           let(:learning_path) { { title: 'New Learning Path', sequenced_courses: [create(:course).id, create(:course).id] } }
           run_test!
         end
-  
+
         response '422', 'invalid request' do
           let(:learning_path) { { title: nil, sequenced_courses: [] } }
           run_test!
@@ -110,3 +111,4 @@ RSpec.describe 'LearningPaths', type: :request do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

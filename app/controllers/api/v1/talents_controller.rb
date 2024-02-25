@@ -1,4 +1,8 @@
 # frozen_string_literal: true
 
-class Api::V1::TalentsController < ApplicationController
+module Api
+  module V1
+    class TalentsController < ApplicationController
+    end
+  end
 end

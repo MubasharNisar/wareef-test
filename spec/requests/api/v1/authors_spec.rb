@@ -2,6 +2,7 @@
 
 require 'swagger_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'Authors', type: :request do
   path '/authors' do
     get 'Retrieves all authors' do
@@ -24,7 +25,7 @@ RSpec.describe 'Authors', type: :request do
           email: { type: :string }
           # Add other attributes as needed
         },
-        required: ['name', 'email']
+        required: %w[name email]
       }
 
       response '201', 'author created' do
@@ -68,7 +69,7 @@ RSpec.describe 'Authors', type: :request do
           email: { type: :string }
           # Add other attributes as needed
         },
-        required: ['name', 'email']
+        required: %w[name email]
       }
 
       response '200', 'author updated' do
@@ -114,3 +115,4 @@ RSpec.describe 'Authors', type: :request do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

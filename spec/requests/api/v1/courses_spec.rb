@@ -2,6 +2,7 @@
 
 require 'swagger_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'Courses', type: :request do
   path '/courses' do
     get 'Retrieves all courses' do
@@ -25,7 +26,7 @@ RSpec.describe 'Courses', type: :request do
           code: { type: :string },
           credit_hours: { type: :integer }
         },
-        required: ['title', 'author_id', 'code', 'credit_hours']
+        required: %w[title author_id code credit_hours]
       }
 
       response '201', 'course created' do
@@ -77,7 +78,7 @@ RSpec.describe 'Courses', type: :request do
           code: { type: :string },
           credit_hours: { type: :integer }
         },
-        required: ['title', 'author_id', 'code', 'credit_hours']
+        required: %w[title author_id code credit_hours]
       }
 
       response '200', 'course updated' do
@@ -130,3 +131,4 @@ RSpec.describe 'Courses', type: :request do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

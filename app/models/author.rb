@@ -11,7 +11,7 @@ class Author < ApplicationRecord
   private
 
   def transfer_courses_to_another_author
-    new_author = Author.where.not(id: id).first
+    new_author = Author.where.not(id:).first
 
     if new_author
       courses.update_all(author_id: new_author.id)
