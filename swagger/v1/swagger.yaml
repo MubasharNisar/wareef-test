@@ -1,0 +1,192 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/courses":
+    get:
+      summary: Retrieves all courses
+      tags:
+      - Courses
+      responses:
+        '200':
+          description: courses found
+    post:
+      summary: Creates a course
+      tags:
+      - Courses
+      parameters: []
+      responses:
+        '201':
+          description: course created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                learning_path_id:
+                  type: integer
+                author_id:
+                  type: integer
+              required:
+              - title
+              - learning_path_id
+              - author_id
+  "/courses/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves a course
+      tags:
+      - Courses
+      responses:
+        '200':
+          description: course found
+        '404':
+          description: course not found
+    put:
+      summary: Updates a course
+      tags:
+      - Courses
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: course updated
+        '422':
+          description: invalid request
+        '404':
+          description: course not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                learning_path_id:
+                  type: integer
+                author_id:
+                  type: integer
+              required:
+              - title
+              - learning_path_id
+              - author_id
+    delete:
+      summary: Deletes a course
+      tags:
+      - Courses
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: course deleted
+        '404':
+          description: course not found
+  "/learning_paths":
+    get:
+      summary: Retrieves all learning paths
+      tags:
+      - Learning Paths
+      responses:
+        '200':
+          description: learning paths found
+    post:
+      summary: Creates a learning path
+      tags:
+      - Learning Paths
+      parameters: []
+      responses:
+        '201':
+          description: learning path created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+              required:
+              - title
+  "/learning_paths/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves a learning path
+      tags:
+      - Learning Paths
+      responses:
+        '200':
+          description: learning path found
+        '404':
+          description: learning path not found
+    put:
+      summary: Updates a learning path
+      tags:
+      - Learning Paths
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: learning path updated
+        '422':
+          description: invalid request
+        '404':
+          description: learning path not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+              required:
+              - title
+    delete:
+      summary: Deletes a learning path
+      tags:
+      - Learning Paths
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: learning path deleted
+        '404':
+          description: learning path not found
+servers:
+- url: "/api/v1"
