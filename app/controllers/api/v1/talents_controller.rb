@@ -47,20 +47,20 @@ module Api
 
       def become_author
         talent = Talent.find(params[:id])
-    
+
         # Check if the talent is not already an author
         if talent.author.present?
           render json: { message: "Talent is already an author." }, status: :unprocessable_entity
           return
         end
-    
+
         # Create a new author with the same name as the talent
         author = Author.create(name: talent.name, email: talent.email)
-    
+
         # Update the talent with the author association
-        talent.update(author: author)
-    
-        render json: { message: "Talent is now an author.", talent: talent }, status: :ok
+        talent.update(author:)
+
+        render json: { message: "Talent is now an author.", talent: }, status: :ok
       rescue ActiveRecord::RecordNotFound
         render json: { message: "Talent not found." }, status: :not_found
       end

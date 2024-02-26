@@ -24,7 +24,7 @@ RSpec.describe 'Talents', type: :request do
           email: { type: :string }
           # Add other attributes as needed
         },
-        required: ['name', 'email']
+        required: %w[name email]
       }
 
       response '201', 'talent created' do
@@ -68,7 +68,7 @@ RSpec.describe 'Talents', type: :request do
           email: { type: :string }
           # Add other attributes as needed
         },
-        required: ['name', 'email']
+        required: %w[name email]
       }
 
       response '200', 'talent updated' do

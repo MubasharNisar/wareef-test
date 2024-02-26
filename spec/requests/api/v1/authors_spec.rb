@@ -103,12 +103,12 @@ RSpec.describe 'Authors', type: :request do
       let(:another_author) { create(:author) }
       produces 'application/json'
       parameter name: :id, in: :path, type: :integer, required: true
-    
+
       response '200', 'author deleted successfully' do
         let(:id) { author_to_delete.id }
         run_test!
       end
-    
+
       response '404', 'author not found' do
         let(:id) { 0 }
         run_test!
