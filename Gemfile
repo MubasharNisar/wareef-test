@@ -35,6 +35,7 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-rails', require: false
   gem 'simplecov', require: false
+  gem 'faker'
 end
 
 group :development do
