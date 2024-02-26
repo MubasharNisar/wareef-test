@@ -16,7 +16,6 @@ module Api
 
       def create
         @course = Course.new(course_params)
-
         if @course.save
           render json: @course, status: :created
         else
@@ -35,6 +34,64 @@ module Api
       def destroy
         @course.destroy
         head :no_content
+      end
+
+      def complete_course
+        talent = Talent.find(params[:talent_id])
+        course = Course.find(params[:id])
+      
+        ActiveRecord::Base.transaction do
+          enrollment = talent.enrollments.find_by(course: course)
+      
+          # Check if the course is already complete
+          if enrollment.status == 'complete'
+            render json: { message: 'Course is already complete' }
+            return
+          end
+      
+          enrollment.update!(status: :complete)
+          # Check if all courses in the learning path are complete
+          learning_path = course.learning_paths&.first
+          if learning_path && learning_path.courses.all? { |course| talent.enrollments.find_by(course: course)&.status == 'complete' }
+            learning_path.update!(status: :complete)
+            render json: { message: 'Learning path is complete' }
+          else
+            # Check if there is a next course in the learning path and enroll in it
+            current_seq = learning_path.learning_path_courses.where(course_id: course.id)&.first.sequence
+            next_course = learning_path.learning_path_courses.where(sequence: current_seq+1)&.first&.course
+            if next_course
+              talent.enrollments.create!(course: next_course, status: :in_progress)
+            end
+      
+            render json: enrollment
+          end
+        end
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: 'Talent or Course not found' }, status: :not_found
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+
+      def enroll
+        talent = Talent.find(params[:talent_id])
+        course = Course.find(params[:id])
+      
+        if talent.courses.include?(course)
+          render json: { error: 'Talent is already enrolled in this course' }, status: :unprocessable_entity
+          return
+        end
+      
+        ActiveRecord::Base.transaction do
+          begin
+            # Enroll talent in the course
+            enrollment = talent.enrollments.create!(course: course, status: :in_progress)
+            render json: enrollment, status: :created
+          rescue ActiveRecord::RecordInvalid => e
+            render json: { error: e.message }, status: :unprocessable_entity
+          end
+        end
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: 'Talent or Course not found' }, status: :not_found
       end
 
       private

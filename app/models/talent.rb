@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 class Talent < ApplicationRecord
-  has_and_belongs_to_many :courses
-  has_and_belongs_to_many :learning_paths
+  has_many :enrollments, dependent: :destroy
+  has_many :courses, through: :enrollments
+  belongs_to :author, optional: true
+  # has_many :authored_courses, class_name: 'Course', foreign_key: 'author_id'
+  has_many :learning_path_enrollments, dependent: :destroy
+  has_many :learning_paths, through: :learning_path_enrollments
+  has_many :enrolled_courses, through: :enrollments, source: :course
 
   def mark_course_completed
     talent = Talent.find(params[:talent_id])

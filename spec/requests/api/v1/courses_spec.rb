@@ -130,5 +130,51 @@ RSpec.describe 'Courses', type: :request do
       end
     end
   end
+
+  path '/courses/{id}/enroll' do
+    parameter name: :id, in: :path, type: :integer, required: true
+    parameter name: :talent_id, in: :path, type: :integer, required: true
+
+    post 'Enrolls a talent in a course' do
+      tags 'Courses'
+      consumes 'application/json'
+      produces 'application/json'
+
+      response '201', 'enrollment created' do
+        let(:id) { create(:course).id }
+        let(:talent_id) { create(:talent).id }
+        run_test!
+      end
+
+      response '404', 'course or talent not found' do
+        let(:id) { 0 }
+        let(:talent_id) { 0 }
+        run_test!
+      end
+    end
+  end
+
+  path '/courses/{id}/complete_course' do
+    parameter name: :id, in: :path, type: :integer, required: true
+    parameter name: :talent_id, in: :query, type: :integer, required: true
+
+    post 'Completes a course for a talent' do
+      tags 'Courses'
+      consumes 'application/json'
+      produces 'application/json'
+
+      response '200', 'course completed' do
+        let(:id) { create(:course).id }
+        let(:talent_id) { create(:talent).id }
+        run_test!
+      end
+
+      response '404', 'course or talent not found' do
+        let(:id) { 0 }
+        let(:talent_id) { 0 }
+        run_test!
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

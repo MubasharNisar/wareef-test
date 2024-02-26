@@ -33,6 +33,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-rails', require: false
+  gem 'simplecov', require: false
+  gem 'factory_bot_rails'
 end
 
 group :development do

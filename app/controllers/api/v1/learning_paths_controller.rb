@@ -63,6 +63,29 @@ module Api
         head :no_content
       end
 
+      def enroll
+        talent = Talent.find(params[:talent_id])
+        learning_path = LearningPath.find(params[:id])
+      
+        ActiveRecord::Base.transaction do
+          if talent.learning_paths.include?(learning_path)
+            render json: { error: 'Talent is already enrolled in this learning path' }, status: :unprocessable_entity
+            return
+          end
+      
+          # Enroll talent in learning path
+          learning_path_enrollment = talent.learning_path_enrollments.create!(learning_path: learning_path, status: :in_progress)
+      
+          # Enroll talent in the first course of the learning path
+          first_course = learning_path.courses.order(:sequence).first
+          talent.enrollments.create!(course: first_course, status: :in_progress) if first_course
+      
+          render json: learning_path_enrollment, status: :created
+        end
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+
       private
 
       def learning_path_params

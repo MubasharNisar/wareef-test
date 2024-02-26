@@ -202,6 +202,48 @@ paths:
           description: course deleted
         '404':
           description: course not found
+  "/courses/{id}/enroll":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: talent_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: Enrolls a talent in a course
+      tags:
+      - Courses
+      responses:
+        '201':
+          description: enrollment created
+        '404':
+          description: course or talent not found
+  "/courses/{id}/complete_course":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: talent_id
+      in: query
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: Completes a course for a talent
+      tags:
+      - Courses
+      responses:
+        '200':
+          description: course completed
+        '404':
+          description: course or talent not found
   "/learning_paths":
     get:
       summary: Retrieves all learning paths
@@ -294,5 +336,144 @@ paths:
           description: learning path deleted
         '404':
           description: learning path not found
+  "/learning_paths/{id}/enroll":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: Enroll talent in a learning path
+      tags:
+      - Learning Paths
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: talent_id
+        in: query
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: talent enrolled in learning path
+        '422':
+          description: invalid request
+        '404':
+          description: learning path not found
+  "/talents":
+    get:
+      summary: Retrieves all talents
+      tags:
+      - Talents
+      responses:
+        '200':
+          description: talents found
+    post:
+      summary: Creates a talent
+      tags:
+      - Talents
+      parameters: []
+      responses:
+        '201':
+          description: talent created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              required:
+              - name
+              - email
+  "/talents/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves a talent
+      tags:
+      - Talents
+      responses:
+        '200':
+          description: talent found
+        '404':
+          description: talent not found
+    put:
+      summary: Updates a talent
+      tags:
+      - Talents
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: talent updated
+        '422':
+          description: invalid request
+        '404':
+          description: talent not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              required:
+              - name
+              - email
+    delete:
+      summary: Deletes a talent
+      tags:
+      - Talents
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: talent deleted successfully
+        '404':
+          description: talent not found
+  "/talents/{id}/become_author":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: Become an author
+      tags:
+      - Talents
+      responses:
+        '200':
+          description: talent became an author
+        '404':
+          description: talent not found
+        '422':
+          description: talent is already an author
 servers:
 - url: "/api/v1"

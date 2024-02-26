@@ -38,7 +38,7 @@ module Api
 
       # DELETE /authors/1
       def destroy
-        if @author.destroy
+        if transfer_courses_before_destroy(@author) && @author.destroy
           render json: { message: 'Author deleted successfully. Courses transferred to another author.' }, status: :ok
         else
           render json: { error: 'No other author available to transfer courses.' }, status: :unprocessable_entity
@@ -61,7 +61,7 @@ module Api
         # Find another author to transfer courses to
         new_author = Author.where.not(id: author.id).first
 
-        return nil unless new_author
+        return false unless new_author
 
         # Transfer courses to the new author
         author.courses.update_all(author_id: new_author.id)

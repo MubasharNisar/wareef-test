@@ -110,5 +110,34 @@ RSpec.describe 'LearningPaths', type: :request do
       end
     end
   end
+  path '/learning_paths/{id}/enroll' do
+    parameter name: :id, in: :path, type: :integer, required: true
+
+    post 'Enroll talent in a learning path' do
+      tags 'Learning Paths'
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :integer, required: true
+      parameter name: :talent_id, in: :query, type: :integer, required: true
+
+      response '201', 'talent enrolled in learning path' do
+        let(:id) { create(:learning_path).id }
+        let(:talent_id) { create(:talent).id }
+        run_test!
+      end
+
+      response '422', 'invalid request' do
+        let(:id) { create(:learning_path).id }
+        let(:talent_id) { nil }
+        run_test!
+      end
+
+      response '404', 'learning path not found' do
+        let(:id) { 0 }
+        let(:talent_id) { create(:talent).id }
+        run_test!
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
