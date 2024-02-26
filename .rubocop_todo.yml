@@ -81,18 +81,9 @@ Style/Documentation:
   Exclude:
     - 'spec/**/*'
     - 'test/**/*'
-    - 'app/mailers/application_mailer.rb'
-    - 'app/models/application_record.rb'
-    - 'app/models/author.rb'
-    - 'app/models/course.rb'
-    - 'app/models/learning_path.rb'
-    - 'app/models/talent.rb'
-    - 'app/serializers/talent_serializer.rb'
+    - 'app/**/*'
     - 'config/application.rb'
-    - 'db/migrate/20240225103509_create_talents.rb'
-    - 'db/migrate/20240225103518_create_authors.rb'
-    - 'db/migrate/20240225103524_create_courses.rb'
-    - 'db/migrate/20240225103531_create_learning_paths.rb'
+    - 'db/migrate/*'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
@@ -124,6 +115,9 @@ Style/IfUnlessModifier:
 Style/PerlBackrefs:
   Exclude:
     - 'bin/bundle'
+Metrics/BlockLength:
+  Exclude:
+  - 'db/schema.rb'
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).

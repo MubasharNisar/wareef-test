@@ -3,5 +3,6 @@
 class Author < ApplicationRecord
   has_many :courses, dependent: :nullify
 
-  before_destroy :transfer_courses_to_another_author
+  validates :name, presence: true
+  validates :email, presence: true, uniqueness: true
 end
